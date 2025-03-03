@@ -14,8 +14,8 @@ jobs:
       - name: Install Flyway 11.3.4
         run: |
           wget https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.4/flyway-commandline-11.3.4-windows-x64.zip
-          unzip flyway-11.3.4.zip
-          mv flyway-flyway-11.3.4 flyway
+          unzip flyway-commandline-11.3.4-windows-x64.zip
+          mv flyway-11.3.4 flyway
           chmod +x flyway/flyway
 
       - name: Copy Migration Files
