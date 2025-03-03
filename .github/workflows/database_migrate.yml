@@ -1,0 +1,32 @@
+name: Flyway database migration
+
+on:
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Flyway 11.3.4
+        run: |
+          wget https://download.red-gate.com/maven/release/com/redgate/flyway/flyway-commandline/11.3.4/flyway-commandline-11.3.4-windows-x64.zip
+          unzip flyway-11.3.4.zip
+          mv flyway-flyway-11.3.4 flyway
+          chmod +x flyway/flyway
+
+      - name: Copy Migration Files
+        run: |
+          mkdir -p flyway/migrations  # Ensure the directory exists
+          cp -r migrations/* flyway/migrations  # Copy SQL scripts
+
+      - name: Run Flyway Migration
+        env:
+          FLYWAY_URL: "jdbc:postgresql://${{ secrets.DB_HOST }}:5432/${{ secrets.DB_DB }}?currentSchema=${{ secrets.DB_SCHEMA }}"
+          FLYWAY_USER: ${{ secrets.DB_USER }}
+          FLYWAY_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          ./flyway/flyway migrate -url="$FLYWAY_URL" -user="$FLYWAY_USER" -password="$FLYWAY_PASSWORD" -locations="filesystem:flyway/migrations"
