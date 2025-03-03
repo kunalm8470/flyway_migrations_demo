@@ -25,8 +25,8 @@ jobs:
 
       - name: Run Flyway Migration
         env:
-          FLYWAY_URL: "jdbc:postgresql://${{ secrets.DB_HOST }}:5432/${{ secrets.DB_DB }}?currentSchema=${{ secrets.DB_SCHEMA }}"
-          FLYWAY_USER: ${{ secrets.DB_USER }}
-          FLYWAY_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          FLYWAY_URL: "jdbc:postgresql://${{ secrets.DATABASE_HOST }}:5432/${{ secrets.DATABASE_NAME }}?currentSchema=${{ secrets.DATABASE_SCHEMA }}"
+          FLYWAY_USER: ${{ secrets.DATABASE_USERNAME }}
+          FLYWAY_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
         run: |
           ./flyway/flyway migrate -url="$FLYWAY_URL" -user="$FLYWAY_USER" -password="$FLYWAY_PASSWORD" -locations="filesystem:flyway/migrations"
